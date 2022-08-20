@@ -1,5 +1,55 @@
 /*
-  135. Ajustando altura da lista
+  134. Excluindo Transação
+
+  Agora iremos implementar como excluir uma transação cadastrada
+
+  Dentro do ListTile temos uma propriedade (parametro nomeado) que irá inserir algo
+  do lado direito do Card
+
+  trailing: IconButton(
+    onPressed: () {},
+    icon: Icon(Icons.delete),
+    color: Theme.of(context).errorColor,
+  ),
+
+  Neste caso colocamos um botão com um Icone de delete
+
+  Criamos uma nova função chamada "_removeTransaction" que recebe um ID no parametro (string)
+  então nós damos um "removeWhere" na lista "_transactions" onde retorna true/false
+  para que, se o ID for igual ao transaction.id ele irá deletar
+
+  _removeTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere(
+        (element) {
+          return element.id == id;
+        },
+      );
+    });
+  }
+
+  So que iremos fazer o filho conversar com o pai, para fazer isto no 'main.dart' iremos inserir
+  o _removeTransaction que recebe um ID, então enviaremos essa função para o TransactionList
+  através do construtor da Classe
+
+  TransactionList(_transactions, _removeTransaction)
+
+  ---> transaction_list.dart
+  Neste, iremos criar uma variavel que recebe como parametro uma função que esta função irá receber
+  uma String (neste caso, vai ser o ID do _removeTransaction)
+
+  final void Function(String) onRemove;
+
+  e iremos comocar ela no parametro para não termos problema
+  
+  TransactionList(this.transactions, this.onRemove);
+
+
+  após isto, iremos modificar o "onPressed" do trailing para retornar o tr.id, chamando o "onRemove"
+  que foi recebido pelo contrutor, que é o _removeTransaction, o onRemove recebe o parametro tr.id
+  que por sua vez vai subindo ate chegar no método "_removeTransaction" que faz a verificação
+  se é o mesmo id e remove
+  onPressed: () => onRemove(tr.id),
 
 
 
